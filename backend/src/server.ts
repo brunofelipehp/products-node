@@ -1,22 +1,14 @@
 import fastify from "fastify";
+import cors from "@fastify/cors";
+import { productRoutes } from "./routes/products";
 
 const app = fastify();
 
-app.get("/product", () => {
-  return "Hello world!";
+app.register(cors, {
+  origin: true,
 });
 
-app.post("/product", () => {
-  return "Hello world!";
-});
-
-app.put("/product/:id", () => {
-  return "Hello world!";
-});
-
-app.delete("/", () => {
-  return "Hello world!";
-});
+app.register(productRoutes);
 
 app
   .listen({

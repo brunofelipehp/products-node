@@ -1,0 +1,35 @@
+# @name Get-Product
+GET http://localhost:3333/product
+
+
+###
+# @name Create-Product
+POST http://localhost:3333/product
+Content-Type: application/json
+
+{
+  "name": "Notebook",
+  "description": "Notebook Dell Inspiron 15 core i5",
+  "color": "Preto",
+  "price": 4500
+
+}
+
+###
+# @name Update-Product
+PUT http://localhost:3333/product/0e30090b-d634-4307-b387-ade72a68f00e
+Content-Type: application/json
+
+{
+  "name": "Notebook Dell",
+  "description": "Notebook Dell Inspiron 15 ",
+  "color": "Preto",
+  "price": 4580
+
+}
+
+###
+# @name Delete-Product
+DELETE http://localhost:3333/product/0e30090b-d634-4307-b387-ade72a68f00e
+Content-Type: application/json
+
