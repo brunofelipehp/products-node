@@ -1,6 +1,10 @@
 # @name Get-Product
 GET http://localhost:3333/product
 
+###
+# @name Get-Product-id
+GET http://localhost:3333/product/fae1d1f2-c856-4729-8d37-f3d72cb62a76
+
 
 ###
 # @name Create-Product
@@ -8,23 +12,23 @@ POST http://localhost:3333/product
 Content-Type: application/json
 
 {
-  "name": "Notebook",
-  "description": "Notebook Dell Inspiron 15 core i5",
+  "name": "Monitor",
+  "description": "Monitor LG 21.pol 144fps",
   "color": "Preto",
-  "price": 4500
+  "price": 2500
 
 }
 
 ###
 # @name Update-Product
-PUT http://localhost:3333/product/0e30090b-d634-4307-b387-ade72a68f00e
+PUT http://localhost:3333/product/fae1d1f2-c856-4729-8d37-f3d72cb62a76
 Content-Type: application/json
 
 {
-  "name": "Notebook Dell",
-  "description": "Notebook Dell Inspiron 15 ",
+  "name": "Monitor LG",
+  "description": "Monitor LG 21.pol 144fps",
   "color": "Preto",
-  "price": 4580
+  "price": 2500
 
 }
 
