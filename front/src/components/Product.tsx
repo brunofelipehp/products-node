@@ -7,7 +7,9 @@ interface ProductsProps {
 }
 
 async function getProducts() {
-  const res = await fetch(`http://localhost:3333/product`);
+  const res = await fetch(`http://127.0.0.1:3333/product`, {
+    cache: "no-store",
+  });
 
   return res.json();
 }

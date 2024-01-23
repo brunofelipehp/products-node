@@ -13,23 +13,34 @@ export default function Register() {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
-  } = useForm<ProductsInputsProps>();
+  } = useForm<ProductsInputsProps>({
+    defaultValues: { name: "", description: "", price: 0, color: "" },
+  });
 
   const onSubmit: SubmitHandler<ProductsInputsProps> = async (
     data: ProductsInputsProps
   ) => {
-    // const { name, description, price, color } = data;
+    const { name, description, price: priceInput, color } = data;
+
+    const price = Number(priceInput);
 
     try {
-      const response = await fetch(`http://localhost:3333/product`, {
+      const response = await fetch(`http://127.0.0.1:3333/product`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ name, description, price, color }),
       });
-      console.log(data);
+
+      reset({
+        name: "",
+        description: "",
+        price: 0,
+        color: "",
+      });
 
       if (response.ok) {
         const responseData = await response.json();
@@ -41,26 +52,6 @@ export default function Register() {
       console.log(error);
     }
   };
-  async function createProduct() {
-    //  const { name, color, price, description } = productFormData;
-    /*
-    try {
-      await fetch(`http://localhost:3333/product`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          color,
-          price,
-          description,
-        }),
-      });
-      console.log("Ok");
-    } catch (error) {
-      console.log(error);
-    }
-    */
-  }
 
   return (
     <div className="grid justify-center place-content-center">
@@ -73,6 +64,7 @@ export default function Register() {
               className="mt-2 w-80 border rounded-md p-1 outline-purple-600"
               type="text"
               {...register("name", { required: "*Digite o nome do produto" })}
+              placeholder="Digite o nome do produto"
             />
             {errors.name && (
               <span className="text-red-600 text-xs">
@@ -87,6 +79,7 @@ export default function Register() {
               className="mt-2 w-80 border rounded-md p-1 outline-purple-600"
               type="text"
               {...register("color", { required: "*Digite a cor do produto" })}
+              placeholder="Cor do produto"
             />
             {errors.color && (
               <span className="text-red-600 text-xs">
@@ -123,6 +116,7 @@ export default function Register() {
           <div className="grid ">
             <textarea
               className="mt-2  border rounded-md p-1 w-full h-32 resize-none outline-purple-600"
+              placeholder="Digite a descrição do produto"
               {...register("description", {
                 required: "*Digite a descrição do produto",
               })}
