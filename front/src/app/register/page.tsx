@@ -1,16 +1,49 @@
+"use client";
+
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface ProductsInputsProps {
+  name: string;
+  description: string;
+  price: number;
+  color: string;
+}
+
 export default function Register() {
-  async function createProduct(formData: FormData) {
-    "use server";
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ProductsInputsProps>();
 
-    const productFormData = {
-      name: formData.get("name"),
-      color: formData.get("color"),
-      price: formData.get("price"),
-      description: formData.get("description"),
-    };
+  const onSubmit: SubmitHandler<ProductsInputsProps> = async (
+    data: ProductsInputsProps
+  ) => {
+    // const { name, description, price, color } = data;
 
-    const { name, color, price, description } = productFormData;
+    try {
+      const response = await fetch(`http://localhost:3333/product`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(data);
 
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Resposta da API:", responseData);
+      } else {
+        console.error("Erro ao enviar dados para a API:", response.status);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  async function createProduct() {
+    //  const { name, color, price, description } = productFormData;
+    /*
     try {
       await fetch(`http://localhost:3333/product`, {
         method: "POST",
@@ -26,50 +59,79 @@ export default function Register() {
     } catch (error) {
       console.log(error);
     }
+    */
   }
 
   return (
     <div className="grid justify-center place-content-center">
       <h1 className="mb-8 font-bold text-5xl">Cadastrar produto</h1>
-      <form action={createProduct}>
-        <div className="grid grid-cols-2 gap-3">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-2 gap-3 items-baseline">
           <div className="grid ">
             <label htmlFor="">Name</label>
             <input
               className="mt-2 w-80 border rounded-md p-1 outline-purple-600"
               type="text"
-              name="name"
+              {...register("name", { required: "*Digite o nome do produto" })}
             />
+            {errors.name && (
+              <span className="text-red-600 text-xs">
+                {errors.name.message}
+              </span>
+            )}
           </div>
 
-          <div className="grid ">
+          <div className="grid">
             <label htmlFor="">Cor</label>
             <input
               className="mt-2 w-80 border rounded-md p-1 outline-purple-600"
               type="text"
-              name="color"
+              {...register("color", { required: "*Digite a cor do produto" })}
             />
+            {errors.color && (
+              <span className="text-red-600 text-xs">
+                {errors.color.message}
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="grid">
+        <div className="grid mt-2">
           <label htmlFor="">Preço</label>
           <div className="grid ">
             <input
               className="mt-2  border rounded-md p-1 w-3/5 outline-purple-600"
               type="number"
-              name="price"
+              {...register("price", {
+                required: "*Digite o preço do produto",
+                min: {
+                  value: 1,
+                  message: "O preço do produto precisa ser maior 0",
+                },
+              })}
             />
+            {errors.price && (
+              <span className="text-red-600 text-xs">
+                {errors.price.message}
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="grid">
+        <div className="grid mt-2">
           <label htmlFor="">Descrição</label>
           <div className="grid ">
             <textarea
               className="mt-2  border rounded-md p-1 w-full h-32 resize-none outline-purple-600"
-              name="description"
+              {...register("description", {
+                required: "*Digite a descrição do produto",
+              })}
             />
+            {errors.description && (
+              <span className="text-red-600 text-xs">
+                {errors.description.message}
+              </span>
+            )}
           </div>
         </div>
 
