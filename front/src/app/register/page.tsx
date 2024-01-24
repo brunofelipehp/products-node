@@ -27,7 +27,7 @@ export default function Register() {
     const price = Number(priceInput);
 
     try {
-      const response = await fetch(`http://127.0.0.1:3333/product`, {
+      const response = await fetch(`http://localhost:3333/product`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

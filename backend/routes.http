@@ -8,7 +8,7 @@ GET http://localhost:3333/product/fae1d1f2-c856-4729-8d37-f3d72cb62a76
 
 ###
 # @name Create-Product
-POST http://localhost:3333/product
+POST http://127.0.0.1:3333/product
 Content-Type: application/json
 
 {

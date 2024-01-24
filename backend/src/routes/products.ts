@@ -7,7 +7,15 @@ export async function productRoutes(app: FastifyInstance) {
     try {
       const products = await prisma.product.findMany();
 
-      return reply.code(200).send(products);
+      return products.map((product) => {
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description.substring(0, 155).concat("..."),
+          color: product.color,
+          price: product.price,
+        };
+      });
     } catch (error) {
       return reply.code(404).send("Error when searching for products!!!");
     }

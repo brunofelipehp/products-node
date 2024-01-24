@@ -1,3 +1,7 @@
+import { FaRegTrashAlt } from "react-icons/fa";
+import Buttons from "./Buttons";
+import Link from "next/link";
+
 interface ProductsProps {
   id: string;
   name: string;
@@ -7,7 +11,7 @@ interface ProductsProps {
 }
 
 async function getProducts() {
-  const res = await fetch(`http://127.0.0.1:3333/product`, {
+  const res = await fetch(`http://localhost:3333/product`, {
     cache: "no-store",
   });
 
@@ -29,7 +33,15 @@ export default async function Product() {
           </h2>
           <div className="flex justify-center gap-16">
             <p className="w-96">{product.description}</p>
-            <span>{product.price}</span>
+            <div className="grid gap-3">
+              <span>{product.price}</span>
+              <Link
+                href={`/register/${product.id}/`}
+                className="w-8 h-8 bg-red-600 rounded-lg flex justify-center items-center hover:cursor-pointer"
+              >
+                <FaRegTrashAlt size={16} className="text-white" />
+              </Link>
+            </div>
           </div>
         </div>
       ))}
