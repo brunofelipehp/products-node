@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackButton from "./BackButton";
 
 export default function Navbar() {
   return (
@@ -7,9 +8,7 @@ export default function Navbar() {
         <span className="text-3xl font-bold">Products</span>
         <ul className="flex gap-3">
           <li>
-            <Link href="/" className="">
-              Home
-            </Link>
+            <BackButton />
           </li>
           <li>
             <Link href="/register" className="">

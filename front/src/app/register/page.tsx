@@ -1,5 +1,7 @@
 "use client";
 
+import { revalidatePath } from "next/cache";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface ProductsInputsProps {
@@ -9,14 +11,23 @@ interface ProductsInputsProps {
   color: string;
 }
 
-export default function Register() {
+export default function Register(idProd?: string) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const getProductById = async (idProd?: string) => {
+    const res = await fetch(`http://localhost:3333/product/${idProd}`);
+
+    return res.json();
+  };
+
   const {
     handleSubmit,
     register,
     reset,
     formState: { errors },
   } = useForm<ProductsInputsProps>({
-    defaultValues: { name: "", description: "", price: 0, color: "" },
+    defaultValues: () => getProductById(idProd),
   });
 
   const onSubmit: SubmitHandler<ProductsInputsProps> = async (
@@ -56,6 +67,7 @@ export default function Register() {
   return (
     <div className="grid justify-center place-content-center">
       <h1 className="mb-8 font-bold text-5xl">Cadastrar produto</h1>
+      <p>Current pathname: {pathname}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-2 gap-3 items-baseline">
           <div className="grid ">
