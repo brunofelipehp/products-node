@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaRegTrashAlt, FaRegEye } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
@@ -31,14 +32,12 @@ export default function Buttons({ id }: ButtonsProps) {
       >
         <FaRegTrashAlt size={16} className="text-white" />
       </button>
-      <button
-        onClick={() => {
-          router.push(`http://localhost:3333/product/register?id=${id}`);
-        }}
+      <Link
+        href={`http://localhost:3001/register/${id}`}
         className="w-8 h-8 bg-green-500 rounded-lg flex justify-center items-center hover:cursor-pointer hover:bg-green-700"
       >
         <MdEdit size={16} className="text-white" />
-      </button>
+      </Link>
       <button className="w-8 h-8 bg-blue-500 rounded-lg flex justify-center items-center hover:cursor-pointer hover:bg-blue-700">
         <FaRegEye size={16} className="text-white" />
       </button>
