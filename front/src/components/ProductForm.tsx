@@ -1,5 +1,6 @@
 "use client";
 
+import { postProduct } from "@/app/actions";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -42,26 +43,21 @@ export default function ProductForm({ id }: ButtonsProps) {
     const price = Number(priceInput);
 
     try {
-      const response = await fetch(`http://localhost:3333/product`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, price, color }),
+      const response = await postProduct({
+        id,
+        name,
+        description,
+        price,
+        color,
       });
 
-      reset({
-        name: "",
-        description: "",
-        price: 0,
-        color: "",
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Resposta da API:", responseData);
-      } else {
-        console.error("Erro ao enviar dados para a API:", response.status);
+      if (!id) {
+        reset({
+          name: "",
+          description: "",
+          price: 0,
+          color: "",
+        });
       }
     } catch (error) {
       console.log(error);
