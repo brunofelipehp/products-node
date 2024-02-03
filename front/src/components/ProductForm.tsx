@@ -1,7 +1,7 @@
 "use client";
 
 import { postProduct } from "@/app/actions";
-import { usePathname, useRouter } from "next/navigation";
+import { useProductContext } from "@/context/ProductMessageContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface ProductsInputsProps {
@@ -16,6 +16,8 @@ interface ButtonsProps {
 }
 
 export default function ProductForm({ id }: ButtonsProps) {
+  //  const { messageProduct } = useProductContext();
+
   const getProductById = async (idProd?: string) => {
     if (idProd) {
       const res = await fetch(`http://localhost:3333/product/${idProd}`);
@@ -59,8 +61,13 @@ export default function ProductForm({ id }: ButtonsProps) {
           color: "",
         });
       }
+
+      //console.log(messageProduct);
+
+      //handleMessageChange(true);
     } catch (error) {
       console.log(error);
+      // handleMessageChange(false);
     }
   };
 
