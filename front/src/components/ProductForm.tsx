@@ -1,8 +1,11 @@
 "use client";
 
 import { postProduct } from "@/app/actions";
-import { useProductContext } from "@/context/ProductMessageContext";
-import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  MessageProductProps,
+  useProductContext,
+} from "@/context/ProductMessageContext";
+import { useForm, SubmitHandler, set } from "react-hook-form";
 
 interface ProductsInputsProps {
   name: string;
@@ -16,7 +19,7 @@ interface ButtonsProps {
 }
 
 export default function ProductForm({ id }: ButtonsProps) {
-  //  const { messageProduct } = useProductContext();
+  const { setMessageProduct } = useProductContext();
 
   const getProductById = async (idProd?: string) => {
     if (idProd) {
@@ -61,13 +64,10 @@ export default function ProductForm({ id }: ButtonsProps) {
           color: "",
         });
       }
-
-      //console.log(messageProduct);
-
-      //handleMessageChange(true);
+      setMessageProduct(true);
     } catch (error) {
       console.log(error);
-      // handleMessageChange(false);
+      setMessageProduct(true);
     }
   };
 
