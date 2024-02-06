@@ -19,7 +19,7 @@ interface ButtonsProps {
 }
 
 export default function ProductForm({ id }: ButtonsProps) {
-  const { setMessageProduct } = useProductContext();
+  const { setMessageProduct, setErrorMessage } = useProductContext();
 
   const getProductById = async (idProd?: string) => {
     if (idProd) {
@@ -68,6 +68,7 @@ export default function ProductForm({ id }: ButtonsProps) {
     } catch (error) {
       console.log(error);
       setMessageProduct(true);
+      setErrorMessage(true);
     }
   };
 
