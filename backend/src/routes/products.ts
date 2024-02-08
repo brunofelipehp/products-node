@@ -1,11 +1,23 @@
 import { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma";
 import { z } from "zod";
+import { skip } from "node:test";
 
 export async function productRoutes(app: FastifyInstance) {
   app.get("/product", async (request, reply) => {
     try {
-      const products = await prisma.product.findMany();
+      const querySchema = z.object({
+        page: z.number().int().positive().optional(),
+        limit: z.number().int().positive().optional(),
+      });
+
+      const { page = 1, limit = 5 } = querySchema.parse(request.query);
+      const offset = (page - 1) * limit;
+
+      const products = await prisma.product.findMany({
+        take: limit,
+        skip: offset,
+      });
 
       return products.map((product) => {
         return {
