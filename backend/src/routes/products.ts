@@ -1,37 +1,58 @@
 import { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma";
 import { z } from "zod";
-import { skip } from "node:test";
+
+interface ProductsProps {
+  page: number | undefined;
+  limit: number | undefined;
+}
 
 export async function productRoutes(app: FastifyInstance) {
-  app.get("/product", async (request, reply) => {
-    try {
-      const querySchema = z.object({
-        page: z.number().int().positive().optional(),
-        limit: z.number().int().positive().optional(),
-      });
+  app.get(
+    `/product`,
+    {
+      schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            page: { type: "integer", minimum: 1 },
+            limit: { type: "integer", minimum: 1 },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const querySchema = z.object({
+          page: z.number().int().positive().optional(),
+          limit: z.number().int().positive().optional(),
+        });
 
-      const { page = 1, limit = 5 } = querySchema.parse(request.query);
-      const offset = (page - 1) * limit;
+        const { page, limit = 5 } = querySchema.parse(request.query);
+        //console.log(page);
 
-      const products = await prisma.product.findMany({
-        take: limit,
-        skip: offset,
-      });
+        const offset = page ? (page - 1) * limit : 0;
+        console.log(offset);
 
-      return products.map((product) => {
-        return {
-          id: product.id,
-          name: product.name,
-          description: product.description.substring(0, 155).concat("..."),
-          color: product.color,
-          price: product.price,
-        };
-      });
-    } catch (error) {
-      return reply.code(404).send("Error when searching for products!!!");
+        const products = await prisma.product.findMany({
+          take: limit,
+          skip: offset,
+        });
+
+        return products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            description: product.description.substring(0, 155).concat("..."),
+            color: product.color,
+            price: product.price,
+          };
+        });
+      } catch (error) {
+        return reply.code(404).send("Error when searching for products!!!");
+      }
     }
-  });
+  );
 
   app.get("/product/:id", async (request, reply) => {
     try {

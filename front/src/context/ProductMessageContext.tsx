@@ -11,6 +11,8 @@ export interface MessageProductProps {
   setMessageProduct: Dispatch<SetStateAction<boolean>>;
   errorMessage: boolean;
   setErrorMessage: Dispatch<SetStateAction<boolean>>;
+  countPage: number;
+  setCountPage: Dispatch<SetStateAction<number>>;
 }
 
 const ProductContext = createContext<MessageProductProps>({
@@ -18,6 +20,8 @@ const ProductContext = createContext<MessageProductProps>({
   setMessageProduct: (): boolean => false,
   errorMessage: false,
   setErrorMessage: (): boolean => false,
+  countPage: 0,
+  setCountPage: (): number => 0,
 });
 
 export const ProductProvider = ({
@@ -27,6 +31,7 @@ export const ProductProvider = ({
 }) => {
   const [messageProduct, setMessageProduct] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [countPage, setCountPage] = useState<number>(0);
 
   return (
     <ProductContext.Provider
@@ -35,6 +40,8 @@ export const ProductProvider = ({
         setMessageProduct,
         errorMessage,
         setErrorMessage,
+        countPage,
+        setCountPage,
       }}
     >
       {children}

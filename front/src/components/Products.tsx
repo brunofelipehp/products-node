@@ -1,5 +1,8 @@
 import Buttons from "./Buttons";
 import { getProducts } from "@/app/actions";
+import ButtonsPage from "./ButtonsPage";
+import { useProductContext } from "@/context/ProductMessageContext";
+import { useEffect } from "react";
 
 interface ProductsProps {
   id: string;
@@ -10,7 +13,9 @@ interface ProductsProps {
 }
 
 export default async function Products() {
-  const products: ProductsProps[] = await getProducts();
+  const { countPage } = useProductContext();
+  useEffect(() => {}, []);
+  const products: ProductsProps[] = await getProducts(countPage);
   return (
     <div className="w-1/4">
       <div className="grid  w-full ">
@@ -32,6 +37,7 @@ export default async function Products() {
           </div>
         ))}
       </div>
+      <ButtonsPage />
     </div>
   );
 }

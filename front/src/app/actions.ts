@@ -8,11 +8,14 @@ interface ProductsInputsProps {
   color: string;
 }
 
-export async function getProducts() {
+export async function getProducts(pageNumber: number) {
   try {
-    const res = await fetch(`http://localhost:3333/product`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `http://localhost:3333/product?page=${pageNumber}`,
+      {
+        cache: "no-store",
+      }
+    );
 
     return res.json();
   } catch (error) {

@@ -1,5 +1,5 @@
 # @name Get-Product
-GET http://localhost:3333/product
+GET http://localhost:3333/product?page=1
 
 ###
 # @name Get-Product-id
@@ -16,7 +16,6 @@ Content-Type: application/json
   "description": "Monitor LG 21.pol 144fps",
   "color": "Preto",
   "price": 2500
-
 }
 
 ###
