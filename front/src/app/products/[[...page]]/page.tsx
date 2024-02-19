@@ -1,7 +1,6 @@
-import Buttons from "./Buttons";
 import { getProducts } from "@/app/actions";
-import ButtonsPage from "./ButtonsPage";
-//import { useProductContext } from "@/context/ProductMessageContext";
+import Buttons from "@/components/Buttons";
+import ButtonsPage from "@/components/ButtonsPage";
 
 interface ProductsProps {
   id: string;
@@ -11,10 +10,16 @@ interface ProductsProps {
   color: string;
 }
 
-export default async function Products() {
-  //const { countPage } = useProductContext();
+interface PageCountProps {
+  params: {
+    page: number;
+  };
+}
 
-  const products: ProductsProps[] = await getProducts(1);
+export default async function Productsx({ params }: PageCountProps) {
+  const { page } = params;
+
+  const products: ProductsProps[] = await getProducts(page);
   return (
     <div className="w-1/4">
       <div className="grid  w-full ">
@@ -36,7 +41,7 @@ export default async function Products() {
           </div>
         ))}
       </div>
-      {/*<ButtonsPage countPages={page}/>*/}
+      <ButtonsPage countPages={page} />
     </div>
   );
 }
