@@ -28,18 +28,20 @@ export async function productRoutes(app: FastifyInstance) {
           limit: z.number().int().positive().optional(),
         });
 
-        const { page, limit = 5 } = querySchema.parse(request.query);
-        //console.log(page);
+        const { page, limit = 4 } = querySchema.parse(request.query);
 
         const offset = page ? (page - 1) * limit : 0;
-        console.log(offset);
+
+        const totalProducts = await prisma.product.count();
+
+        const totalPages = Math.ceil(totalProducts / limit);
 
         const products = await prisma.product.findMany({
           take: limit,
           skip: offset,
         });
 
-        return products.map((product) => {
+        const productWithDescription = products.map((product) => {
           return {
             id: product.id,
             name: product.name,
@@ -48,6 +50,8 @@ export async function productRoutes(app: FastifyInstance) {
             price: product.price,
           };
         });
+
+        reply.send({ products: productWithDescription, totalPages });
       } catch (error) {
         return reply.code(404).send("Error when searching for products!!!");
       }

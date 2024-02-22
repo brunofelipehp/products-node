@@ -38,9 +38,6 @@ export default function Buttons({ id }: ButtonsProps) {
       >
         <MdEdit size={16} className="text-white" />
       </Link>
-      <button className="w-8 h-8 bg-blue-500 rounded-lg flex justify-center items-center hover:cursor-pointer hover:bg-blue-700">
-        <FaRegEye size={16} className="text-white" />
-      </button>
     </div>
   );
 }

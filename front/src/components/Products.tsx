@@ -15,10 +15,11 @@ export default async function Products() {
   //const { countPage } = useProductContext();
 
   const products: ProductsProps[] = await getProducts(1);
+  console.log(products);
   return (
     <div className="w-1/4">
       <div className="grid  w-full ">
-        {products.map((product: ProductsProps) => (
+        {/*products.map((product: ProductsProps) => (
           <div
             key={product.id}
             className="grid justify-center w-full h-23 p-4 m-4 gap-5  border-2 border-purple-600 rounded-lg"
@@ -37,6 +38,7 @@ export default async function Products() {
         ))}
       </div>
       {/*<ButtonsPage countPages={page}/>*/}
+      </div>
     </div>
   );
 }
