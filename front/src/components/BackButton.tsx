@@ -5,7 +5,7 @@ export default function BackButton() {
   const router = useRouter();
 
   const backPage = () => {
-    router.push("/");
+    router.push(`/products/${1}`);
     router.refresh();
   };
 

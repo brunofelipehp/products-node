@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
+
 interface ProductsInputsProps {
   id?: string;
   name: string;
@@ -13,7 +15,9 @@ export async function getProducts(pageNumber: number) {
     const res = await fetch(
       `http://localhost:3333/product?page=${pageNumber}`,
       {
-        cache: "no-store",
+        next: {
+          tags: ["get-products"],
+        },
       }
     );
 
@@ -41,20 +45,7 @@ export async function postProduct({
       });
 
       if (response.ok) {
-        return response.json();
-      } else {
-        console.error("Erro ao enviar dados para a API:", response.status);
-      }
-    } else {
-      const response = await fetch(`http://localhost:3333/product/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, price, color }),
-      });
-
-      if (response.ok) {
+        revalidateTag("get-products");
         return response.json();
       } else {
         console.error("Erro ao enviar dados para a API:", response.status);
@@ -63,4 +54,15 @@ export async function postProduct({
   } catch (error) {
     console.error("Erro ao enviar dados para a API:");
   }
+}
+
+export async function deleteProduct(id: string) {
+  await fetch(`http://localhost:3333/product/${id}`, {
+    method: "DELETE",
+  });
+
+  //if (res.ok) {
+  revalidateTag("get-products");
+  // router.refresh();
+  // }
 }

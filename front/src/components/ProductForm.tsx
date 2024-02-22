@@ -48,7 +48,7 @@ export default function ProductForm({ id }: ButtonsProps) {
     const price = Number(priceInput);
 
     try {
-      const response = await postProduct({
+      await postProduct({
         id,
         name,
         description,
