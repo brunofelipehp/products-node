@@ -1,6 +1,7 @@
 import { getProducts } from "@/app/actions";
 import Buttons from "@/components/Buttons";
 import ButtonsPage from "@/components/ButtonsPage";
+import MessageProduct from "@/components/MessageProduct";
 
 interface ProductsProps {
   id: string;
@@ -25,6 +26,7 @@ export default async function Products({ params }: PageCountProps) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full ">
       <div className="pb-7 items-center">
+        <MessageProduct />
         <div className="grid  w-full ">
           {products.map((product: ProductsProps) => (
             <div

@@ -5,6 +5,7 @@ import {
   MessageProductProps,
   useProductContext,
 } from "@/context/ProductMessageContext";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler, set } from "react-hook-form";
 
 interface ProductsInputsProps {
@@ -20,6 +21,7 @@ interface ButtonsProps {
 
 export default function ProductForm({ id }: ButtonsProps) {
   const { setMessageProduct, setErrorMessage } = useProductContext();
+  const router = useRouter();
 
   const getProductById = async (idProd?: string) => {
     if (idProd) {
@@ -48,7 +50,7 @@ export default function ProductForm({ id }: ButtonsProps) {
     const price = Number(priceInput);
 
     try {
-      await postProduct({
+      const response = await postProduct({
         id,
         name,
         description,

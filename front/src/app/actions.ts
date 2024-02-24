@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 interface ProductsInputsProps {
   id?: string;
@@ -44,15 +45,21 @@ export async function postProduct({
         body: JSON.stringify({ name, description, price, color }),
       });
 
-      if (response.ok) {
-        revalidateTag("get-products");
-        return response.json();
-      } else {
-        console.error("Erro ao enviar dados para a API:", response.status);
-      }
+      revalidateTag("get-products");
+    } else {
+      await fetch(`http://localhost:3333/product/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, price, color }),
+      });
+
+      revalidateTag("get-products");
+      // redirect("/");
     }
   } catch (error) {
-    console.error("Erro ao enviar dados para a API:");
+    console.error("Erro ao enviar dados para a API:", error);
   }
 }
 
