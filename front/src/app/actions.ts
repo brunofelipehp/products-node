@@ -29,6 +29,29 @@ export async function getProducts(pageNumber: number) {
 }
 
 export async function postProduct({
+  name,
+  description,
+  price,
+  color,
+}: ProductsInputsProps) {
+  try {
+    const response = await fetch(`http://localhost:3333/product`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, description, price, color }),
+    });
+
+    revalidateTag("get-products");
+  } catch (error) {
+    console.error("Erro ao enviar dados para a API:", error);
+  }
+
+  revalidateTag("get-products");
+}
+
+export async function updatedProduct({
   id,
   name,
   description,
@@ -36,31 +59,19 @@ export async function postProduct({
   color,
 }: ProductsInputsProps) {
   try {
-    if (!id) {
-      const response = await fetch(`http://localhost:3333/product`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, price, color }),
-      });
-
-      revalidateTag("get-products");
-    } else {
-      await fetch(`http://localhost:3333/product/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, price, color }),
-      });
-
-      revalidateTag("get-products");
-      // redirect("/");
-    }
+    await fetch(`http://localhost:3333/product/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, description, price, color }),
+    });
   } catch (error) {
     console.error("Erro ao enviar dados para a API:", error);
   }
+
+  revalidateTag("get-products");
+  redirect(`/products/${1}`);
 }
 
 export async function deleteProduct(id: string) {

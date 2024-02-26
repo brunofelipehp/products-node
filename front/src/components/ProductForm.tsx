@@ -1,10 +1,7 @@
 "use client";
 
-import { postProduct } from "@/app/actions";
-import {
-  MessageProductProps,
-  useProductContext,
-} from "@/context/ProductMessageContext";
+import { postProduct, updatedProduct } from "@/app/actions";
+import { useProductContext } from "@/context/ProductMessageContext";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler, set } from "react-hook-form";
 
@@ -50,20 +47,27 @@ export default function ProductForm({ id }: ButtonsProps) {
     const price = Number(priceInput);
 
     try {
-      const response = await postProduct({
-        id,
-        name,
-        description,
-        price,
-        color,
-      });
-
       if (!id) {
+        await postProduct({
+          name,
+          description,
+          price,
+          color,
+        });
+
         reset({
           name: "",
           description: "",
           price: 0,
           color: "",
+        });
+      } else {
+        await updatedProduct({
+          id,
+          name,
+          description,
+          price,
+          color,
         });
       }
       setMessageProduct(true);
