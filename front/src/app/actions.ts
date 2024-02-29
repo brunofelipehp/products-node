@@ -79,8 +79,5 @@ export async function deleteProduct(id: string) {
     method: "DELETE",
   });
 
-  //if (res.ok) {
   revalidateTag("get-products");
-  // router.refresh();
-  // }
 }

@@ -3,10 +3,10 @@ import { useProductContext } from "@/context/ProductMessageContext";
 import { useAutoTimer } from "@/hooks/useAutoTimer";
 
 interface MessageProps {
-  id?: string;
+  page?: number;
 }
 
-export default function MessageProduct({ id }: MessageProps) {
+export default function MessageProduct({ page }: MessageProps) {
   const { messageProduct, setMessageProduct, errorMessage, setErrorMessage } =
     useProductContext();
 
@@ -17,7 +17,7 @@ export default function MessageProduct({ id }: MessageProps) {
 
   const messageText = errorMessage
     ? "Error ao inserir o produto."
-    : id
+    : page == 1
     ? "Produto atualizado com sucesso"
     : "Produto cadastrado com sucesso";
 
